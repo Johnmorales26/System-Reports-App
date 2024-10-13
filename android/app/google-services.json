@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "225490669750",
+    "project_id": "system-reports-app-dd306",
+    "storage_bucket": "system-reports-app-dd306.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225490669750:android:ed84823d59d1ce4a4f5617",
+        "android_client_info": {
+          "package_name": "com.example.system_rep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Z1nKjaVY7_4G6XM_wnvPvAb0EHQFOBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
