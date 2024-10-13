@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:system_reports_app/data/local/user_database.dart';
+import 'package:system_reports_app/data/models/data_entry.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_screen.dart';
 import 'package:system_reports_app/ui/homeModule/home_view_model.dart';
 import 'package:system_reports_app/ui/homeModule/widgets/reports_inner_screen.dart';
@@ -129,7 +130,6 @@ class _HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeViewModel>(context);
-    provider.fetchPendingTaskByUser(snapshot.fseName);
 
     Widget adminMenu = _AdminMenu(snapshot.privileges);
     Widget bottomBar = Container();
@@ -168,10 +168,31 @@ class _HomeScreen extends StatelessWidget {
             'Perfil de Usuario'
           ][provider.currentPageIndex]),
           actions: [
-            IconButton(
-                onPressed: () {},
-                icon: Badge.count(
-                    count: provider.dataEntry.length, child: const Icon(Icons.notifications))),
+            FutureBuilder(
+                future: provider.fetchPendingTaskByUser(snapshot.fseName),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<DataEntry>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Container();
+                  } else if (snapshot.hasData) {
+                    final dataEntryList = snapshot.data!;
+                    if (dataEntryList.isEmpty) {
+                      return IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.notifications));
+                    } else {
+                      return IconButton(
+                          onPressed: () {},
+                          icon: Badge.count(
+                              count: dataEntryList.length,
+                              child: const Icon(Icons.notifications)));
+                    }
+                  } else {
+                    return Container();
+                  }
+                }),
             IconButton(
                 onPressed: () {
                   provider.signOut();

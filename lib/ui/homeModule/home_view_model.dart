@@ -15,9 +15,6 @@ class HomeViewModel extends ChangeNotifier {
   int _currentPageIndex = 0;
   int get currentPageIndex => _currentPageIndex;
 
-  List<DataEntry> _dataEntry = List.empty();
-  List<DataEntry> get dataEntry => _dataEntry;
-
   Future<UserDatabase?> getCurrentUserByFirestore() {
     return Future.delayed(const Duration(milliseconds: 5000), () {
       return currentUser.currentUser;
@@ -45,12 +42,10 @@ class HomeViewModel extends ChangeNotifier {
     return db.downloadFile(context, url, selectedDirectory, typeFile);
   }
 
-  Future<void> fetchPendingTaskByUser(String fseName) async {
+  Future<List<DataEntry>> fetchPendingTaskByUser(String fseName) async {
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await db.fetchPendingTaskByUser(fseName);
-    _dataEntry =
-        snapshot.docs.map((doc) => DataEntry.fromJson(doc.data())).toList();
-    notifyListeners();
+    return snapshot.docs.map((doc) => DataEntry.fromJson(doc.data())).toList();
   }
 
   void updateIndex(int index) {
