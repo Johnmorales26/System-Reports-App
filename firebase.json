@@ -4,7 +4,7 @@
             "android": {
                 "default": {
                     "projectId": "system-reports-app-dd306",
-                    "appId": "1:225490669750:android:ed84823d59d1ce4a4f5617",
+                    "appId": "1:225490669750:android:080ebc9e06def73b4f5617",
                     "fileOutput": "android/app/google-services.json"
                 }
             },
@@ -12,7 +12,7 @@
                 "lib/firebase_options.dart": {
                     "projectId": "system-reports-app-dd306",
                     "configurations": {
-                        "android": "1:225490669750:android:ed84823d59d1ce4a4f5617",
+                        "android": "1:225490669750:android:080ebc9e06def73b4f5617",
                         "ios": "1:225490669750:ios:ae0a869f7e281ce04f5617",
                         "macos": "1:225490669750:ios:ae0a869f7e281ce04f5617",
                         "web": "1:225490669750:web:a924c0c8c5ba75084f5617",
