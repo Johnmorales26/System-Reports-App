@@ -183,11 +183,7 @@ class _HomeScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(Icons.notifications));
                     } else {
-                      return IconButton(
-                          onPressed: () {},
-                          icon: Badge.count(
-                              count: dataEntryList.length,
-                              child: const Icon(Icons.notifications)));
+                      return _CascadingMenuState(dataEntryList: dataEntryList);
                     }
                   } else {
                     return Container();
@@ -360,6 +356,49 @@ class _TaskList extends StatelessWidget {
           },
         );
       },
+    );
+  }
+}
+
+class _CascadingMenuState extends StatefulWidget {
+  final List<DataEntry> dataEntryList;
+
+  const _CascadingMenuState({required this.dataEntryList});
+
+  @override
+  State<StatefulWidget> createState() => _CascadingMenu();
+}
+
+class _CascadingMenu extends State<_CascadingMenuState> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<DataEntry>(
+      onSelected: (DataEntry selectedEntry) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Usted seleccionó: ${selectedEntry.referenceNumber}'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      },
+      itemBuilder: (BuildContext context) {
+        return widget.dataEntryList.map((DataEntry dataEntry) {
+          return PopupMenuItem<DataEntry>(
+            value: dataEntry,
+            child: ListTile(
+              title: Text(dataEntry.client),
+              subtitle: Text(dataEntry.referenceNumber),
+            ),
+          );
+        }).toList();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0), // Añade espacio alrededor del botón
+        child: Badge.count(
+          count: widget.dataEntryList.length,
+          child: const Icon(Icons.notifications),
+        ),
+      ),
     );
   }
 }

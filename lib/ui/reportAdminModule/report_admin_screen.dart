@@ -25,7 +25,7 @@ class _DataEntryFormState extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Data Entry Form'),
         ),
-        body: FutureBuilder(
+        body: SingleChildScrollView(child: FutureBuilder(
             future: vm.fetchAllUsers(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<UserDatabase>> snapshot) {
@@ -132,7 +132,7 @@ class _DataEntryFormState extends StatelessWidget {
               } else {
                 return Container();
               }
-            }));
+            })));
   }
 
   void _showAlertDialog(BuildContext context, List<UserDatabase> users, ReportAdminViewModel vm) {
