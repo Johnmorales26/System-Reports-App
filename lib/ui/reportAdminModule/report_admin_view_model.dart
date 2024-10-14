@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:system_reports_app/data/local/user_database.dart';
 import 'package:system_reports_app/data/models/data_entry.dart';
 import 'package:system_reports_app/utils/constants.dart';
@@ -37,19 +38,30 @@ class ReportAdminViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<UserDatabase>> fetchAllUsers() async {
-    try {
-      CollectionReference collectionRef =
-          FirebaseFirestore.instance.collection(Constants.COLLECTION_USERS);
-      QuerySnapshot querySnapshot = await collectionRef.get();
-      List<UserDatabase> users = querySnapshot.docs.map((doc) {
-        return UserDatabase.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
-      return users;
-    } catch (e) {
-      return [];
-    }
+Future<List<UserDatabase>> fetchAllUsers() async {
+  final logger = Logger();
+  
+  try {
+    logger.i('Fetching all users from Firestore...');
+    
+    CollectionReference collectionRef = FirebaseFirestore.instance.collection(Constants.COLLECTION_USERS);
+    QuerySnapshot querySnapshot = await collectionRef.get();
+    
+    logger.i('QuerySnapshot received: ${querySnapshot.docs.length} documents found.');
+    
+    List<UserDatabase> users = querySnapshot.docs.map((doc) {
+      logger.d('Parsing user from document ID: ${doc.id}');
+      return UserDatabase.fromJson(doc.data() as Map<String, dynamic>);
+    }).toList();
+    
+    logger.i('Successfully fetched ${users.length} users.');
+    return users;
+  } catch (e) {
+    logger.e('Error fetching users: $e');
+    return [];
   }
+}
+
 
   void updateFSEController(String fseName) {
     fseNameController.text = fseName;
