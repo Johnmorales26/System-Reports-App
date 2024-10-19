@@ -21,6 +21,7 @@ class GeneralDataWidget extends StatelessWidget {
             prefixIcon: Icon(Icons.code),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.text),
       const SizedBox(height: Dimens.commonPaddingMin),
       TextField(
@@ -31,36 +32,40 @@ class GeneralDataWidget extends StatelessWidget {
             prefixIcon: Icon(Icons.person),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.name),
       const SizedBox(height: Dimens.commonPaddingMin),
       TextField(
-          controller: provider.customerData.managerNameController,
+          controller: provider.customerData.ubicationController,
           decoration: const InputDecoration(
             labelText: 'Location',
             hintText: 'Enter your location',
             prefixIcon: Icon(Icons.location_on),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.streetAddress),
       const SizedBox(height: Dimens.commonPaddingMin),
       TextField(
-          controller: provider.customerData.ubicationController,
+          controller: provider.customerData.statusController,
           decoration: const InputDecoration(
             labelText: 'Name FSE',
             hintText: 'Enter your name FSE',
             prefixIcon: Icon(Icons.person_2),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.name),
       const SizedBox(height: Dimens.commonPaddingMin),
       TextField(
-          controller: provider.customerData.statusController,
+          controller: provider.customerData.managerNameController,
           decoration: const InputDecoration(
             labelText: 'Custom Manager',
             hintText: 'Enter your custom manager',
             prefixIcon: Icon(Icons.person),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.name),
       const SizedBox(height: Dimens.commonPaddingMin),
       TextField(
@@ -71,6 +76,7 @@ class GeneralDataWidget extends StatelessWidget {
             prefixIcon: Icon(Icons.person),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.text),
       const SizedBox(height: Dimens.commonPaddingMin),
       TextField(
@@ -81,6 +87,7 @@ class GeneralDataWidget extends StatelessWidget {
             prefixIcon: Icon(Icons.notes),
             filled: true,
           ),
+          enabled: false,
           keyboardType: TextInputType.text),
     ]);
   }

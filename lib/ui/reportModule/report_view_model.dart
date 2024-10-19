@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,11 +7,13 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:signature/signature.dart';
 import 'package:system_reports_app/data/local/task_entity.dart';
+import 'package:system_reports_app/data/models/data_entry.dart';
 import 'package:system_reports_app/ui/expensesReportModule/pdf_generator.dart';
 import 'package:system_reports_app/ui/reportModule/models/customer_data.dart';
 import 'package:system_reports_app/ui/reportModule/models/trip_data.dart';
 import 'package:system_reports_app/ui/reportModule/models/work_schedule.dart';
 import 'package:system_reports_app/ui/style/dimens.dart';
+import 'package:system_reports_app/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'web_image_picker.dart' if (dart.library.io) 'mobile_image_picker.dart';
@@ -298,5 +301,31 @@ class ReportViewModel extends ChangeNotifier {
     customerData.activityController.clear();
     customerData.observationsController.clear();
     urlController.clear();
+  }
+
+  void initData(DataEntry dataEntry) {
+    customerData.referenceNumberController.text = dataEntry.referenceNumber;
+    customerData.clientNameController.text = dataEntry.client;
+    customerData.managerNameController.text = dataEntry.customManager;
+    customerData.ubicationController.text = dataEntry.location;
+    customerData.statusController.text = dataEntry.fseName;
+    customerData.activityController.text = dataEntry.activityPerformed;
+    customerData.observationsController.text = dataEntry.observations;
+  }
+
+  void deletePendingTask(DataEntry dataEntry) async {
+    Map<String, dynamic> dataMap = dataEntry.toJson();
+    CollectionReference collection = FirebaseFirestore.instance.collection(Constants.COLLECTION_PENDING_TASK);
+    Query query = collection;
+    dataMap.forEach((key, value) {
+      query = query.where(key, isEqualTo: value);
+    });
+
+    QuerySnapshot querySnapshot = await query.get();
+    if(querySnapshot.docs.isNotEmpty) {
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+    }
   }
 }

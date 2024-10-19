@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
+import 'package:system_reports_app/data/models/data_entry.dart';
 import 'package:system_reports_app/ui/homeModule/home_screen.dart';
 import 'package:system_reports_app/ui/reportModule/report_view_model.dart';
 import 'package:system_reports_app/ui/reportModule/widgets/data_travel_widget.dart';
@@ -18,8 +19,9 @@ import 'package:image/image.dart' as img;
 
 class ReportScreen extends StatelessWidget {
   static const String route = '/ReportScreen';
+  final DataEntry dataEntry;
 
-  const ReportScreen({super.key});
+  const ReportScreen({super.key, required this.dataEntry});
 
   Future<File> _getSignatureFile(ReportViewModel viewModel) async {
     final imageBytes = await viewModel.signatureController.toPngBytes();
@@ -36,6 +38,7 @@ class ReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ReportViewModel>(context);
+    viewModel.initData(dataEntry);
     final screenWidth = MediaQuery.of(context).size.width;
     Widget view = Container();
     if (screenWidth >= 600) {
@@ -78,6 +81,7 @@ class ReportScreen extends StatelessWidget {
               var response = await viewModel.generatePDF(signature);
               if (response) {
                 viewModel.clearControllers();
+                viewModel.deletePendingTask(dataEntry);
                 Navigator.pushNamedAndRemoveUntil(
                     context, HomeScreen.route, (route) => false);
               } else {

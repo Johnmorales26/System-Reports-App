@@ -374,12 +374,10 @@ class _CascadingMenu extends State<_CascadingMenuState> {
   Widget build(BuildContext context) {
     return PopupMenuButton<DataEntry>(
       onSelected: (DataEntry selectedEntry) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Usted seleccionó: ${selectedEntry.referenceNumber}'),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ReportScreen(dataEntry: selectedEntry)));
       },
       itemBuilder: (BuildContext context) {
         return widget.dataEntryList.map((DataEntry dataEntry) {
