@@ -351,16 +351,20 @@ class _TaskList extends StatelessWidget {
                     .toList() ??
                 [];
 
-            if (tasks.isEmpty) {
+            final filteredTasks = tasks.where((task) {
+              return task.uidUser == viewModel.currentUser.currentUser?.uid;
+            }).toList();
+
+            if (filteredTasks.isEmpty) {
               return const Center(child: Text('No tasks available'));
             }
 
             return Flexible(
               fit: FlexFit.loose,
               child: ListView.builder(
-                itemCount: tasks.length,
+                itemCount: filteredTasks.length,
                 itemBuilder: (context, index) {
-                  final task = tasks[index];
+                  final task = filteredTasks[index];
                   return ItemTask(taskEntity: task);
                 },
               ),

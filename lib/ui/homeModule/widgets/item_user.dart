@@ -23,7 +23,7 @@ class _ItemUserState extends State<ItemUser> {
   Widget build(BuildContext context) {
     Widget imageProfile = Container();
 
-    if (widget.user.image.isEmpty || widget.user.image == null) {
+    if (widget.user.image.isEmpty) {
       imageProfile = const Icon(Icons.person, size: 50);
     } else {
       imageProfile = ClipOval(
