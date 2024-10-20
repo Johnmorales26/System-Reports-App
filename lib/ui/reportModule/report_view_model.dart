@@ -251,7 +251,7 @@ class ReportViewModel extends ChangeNotifier {
         FirebaseAuth.instance.currentUser!.uid,
         false,
         image: urlController.text);
-    return firebaseDatabase.createTask(taskEntity);
+    return firebaseDatabase.createTask(Constants.COLLECTION_TASKS, taskEntity);
   }
 
   Future<void> launchURL(String url) async {

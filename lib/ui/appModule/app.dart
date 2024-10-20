@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_screen.dart';
+import 'package:system_reports_app/ui/generalReportModule/general_report_screen.dart';
 import 'package:system_reports_app/ui/profileModule/profile_screen.dart';
 import 'package:system_reports_app/ui/reportAdminModule/report_admin_screen.dart';
 import 'package:system_reports_app/ui/reportModule/report_screen.dart';

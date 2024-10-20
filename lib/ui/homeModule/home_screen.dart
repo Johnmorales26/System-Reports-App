@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:system_reports_app/data/local/user_database.dart';
 import 'package:system_reports_app/data/models/data_entry.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_screen.dart';
+import 'package:system_reports_app/ui/generalReportModule/general_report_screen.dart';
 import 'package:system_reports_app/ui/homeModule/home_view_model.dart';
 import 'package:system_reports_app/ui/homeModule/widgets/reports_inner_screen.dart';
 import 'package:system_reports_app/ui/profileModule/profile_screen.dart';
@@ -12,6 +13,7 @@ import 'package:system_reports_app/ui/registerModule/user_privileges.dart';
 import 'package:system_reports_app/ui/signInModule/sign_in_screen.dart';
 import 'package:system_reports_app/ui/style/dimens.dart';
 import 'package:system_reports_app/ui/widgets/item_task.dart';
+import 'package:system_reports_app/utils/constants.dart';
 
 import '../../data/local/task_entity.dart';
 import '../appModule/assets.dart';
@@ -287,14 +289,26 @@ class __AdminMenuState extends State<_AdminMenu> {
                   title: const Text('Computer Report'),
                   subtitle: const Text('Create a report for a computer.'),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => Navigator.pushNamed(context, ReportScreen.route),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GeneralReportScreen(
+                            typeReport: Constants
+                                .COLLECTION_COMPUTER), // Paso de parámetro
+                      )),
                 ),
               if (widget.privileges == UserPrivileges.admin)
                 ListTile(
                   leading: const Icon(Icons.car_crash_outlined),
                   title: const Text('Vehicle Report'),
                   subtitle: const Text('Create a report for a vehicle.'),
-                  onTap: () => Navigator.pushNamed(context, ReportScreen.route),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GeneralReportScreen(
+                            typeReport: Constants
+                                .COLLECTION_VEHICLE), // Paso de parámetro
+                      )),
                 ),
               if (widget.privileges == UserPrivileges.user)
                 ListTile(

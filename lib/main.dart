@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:system_reports_app/ui/appModule/app.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_view_model.dart';
+import 'package:system_reports_app/ui/generalReportModule/general_report_view_model.dart';
 import 'package:system_reports_app/ui/homeModule/home_view_model.dart';
 import 'package:system_reports_app/ui/homeModule/widgets/reports_view_model.dart';
 import 'package:system_reports_app/ui/profileModule/profile_view_model.dart';
@@ -26,7 +27,8 @@ void main() async {
       ChangeNotifierProvider(create: (_) => ReportAdminViewModel()),
       ChangeNotifierProvider(create: (_) => ExpensesReportViewModel()),
       ChangeNotifierProvider(create: (_) => ReportsInnerViewModel()),
-      ChangeNotifierProvider(create: (_) => ProfileViewModel())
+      ChangeNotifierProvider(create: (_) => ProfileViewModel()),
+      ChangeNotifierProvider(create: (_) => GeneralReportViewModel())
     ],
     child: const App()
   ));

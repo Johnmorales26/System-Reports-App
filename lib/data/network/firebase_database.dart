@@ -44,10 +44,10 @@ class FirebaseDatabase {
     return await db.collection(Constants.COLLECTION_USERS).get();
   }
 
-  Future<bool> createTask(TaskEntity taskEntity) async {
+  Future<bool> createTask(String collection, TaskEntity taskEntity) async {
     try {
       await db
-          .collection(Constants.COLLECTION_TASKS)
+          .collection(collection)
           .doc(taskEntity.id.toString())
           .set(taskEntity.toJson());
       return true;

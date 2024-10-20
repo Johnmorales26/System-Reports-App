@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:system_reports_app/utils/constants.dart';
 
 import 'web_image_picker.dart' if (dart.library.io) 'mobile_image_picker.dart';
 import 'package:flutter/material.dart';
@@ -354,7 +355,7 @@ class ExpensesReportViewModel extends ChangeNotifier {
     final taskEntity = TaskEntity(DateTime.now().millisecondsSinceEpoch,
         referenceController.text, downloadURL, FirebaseAuth.instance.currentUser!.uid, false,
         image: '');
-    return firebaseDatabase.createTask(taskEntity);
+    return firebaseDatabase.createTask(Constants.COLLECTION_TASKS_EXPENSES, taskEntity);
   }
 
   void itemDelete(int index) {

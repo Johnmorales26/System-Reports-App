@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_view_model.dart';
+import 'package:system_reports_app/ui/generalReportModule/general_report_view_model.dart';
+import 'package:system_reports_app/ui/reportModule/report_view_model.dart';
 
 Future<String> getImageFromGallery(
     BuildContext context, ExpensesReportViewModel provider) async {
@@ -55,6 +57,19 @@ Future<bool> generateFile(pw.Document pdf, String reference, ExpensesReportViewM
   await file.writeAsBytes(await pdf.save());
   String response = await uploadFile(file, 'pdfs/${file.path.split('/').last}.pdf');
   reportViewModel.saveInFirestore(response);
+  if (response.isNotEmpty) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> generateFileReportGeneral(pw.Document pdf, String reference, GeneralReportViewModel reportViewModel, String collection) async {
+  final memory = await getInternalStoragePath();
+  final file = File('$memory/$reference');
+  await file.writeAsBytes(await pdf.save());
+  String response = await uploadFile(file, 'pdfs/${file.path.split('/').last}.pdf');
+  reportViewModel.saveInFirestore(response, collection);
   if (response.isNotEmpty) {
     return true;
   } else {
