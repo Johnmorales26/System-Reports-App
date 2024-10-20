@@ -21,8 +21,8 @@ class HomeViewModel extends ChangeNotifier {
     });
   }
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllTask() {
-    return db.getTask();
+  Future<Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>> getAllTask() {
+    return db.getAllTask();
   }
 
   Future<void> deleteTask(String taskId) async {

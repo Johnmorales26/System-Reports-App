@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:system_reports_app/data/local/task_entity.dart';
 import 'package:system_reports_app/data/local/user_database.dart';
 import 'dart:io';
+import 'package:async/async.dart'; // Para StreamZip
 
 import '../../utils/constants.dart';
 
@@ -56,9 +57,20 @@ class FirebaseDatabase {
     }
   }
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getTask() async {
-    return db.collection(Constants.COLLECTION_TASKS).snapshots();
-  }
+  Future<Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>> getAllTask() async {
+  final taskCollection1 = db.collection(Constants.COLLECTION_TASKS).snapshots();
+  final taskCollection2 = db.collection(Constants.COLLECTION_TASKS_EXPENSES).snapshots();
+  final taskCollection3 = db.collection(Constants.COLLECTION_COMPUTER).snapshots();
+  final taskCollection4 = db.collection(Constants.COLLECTION_VEHICLE).snapshots();
+
+  return StreamZip([
+    taskCollection1,
+    taskCollection2,
+    taskCollection3,
+    taskCollection4,
+  ]).map((snapshots) => snapshots.expand((snapshot) => snapshot.docs).toList());
+}
+
 
   Future<void> deleteTask(String taskId) async {
     await db.collection(Constants.COLLECTION_TASKS).doc(taskId).delete();
