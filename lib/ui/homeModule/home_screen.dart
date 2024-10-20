@@ -157,6 +157,18 @@ class _HomeScreen extends StatelessWidget {
               label: 'Profile',
             )
           ]);
+    } else {
+      bottomBar = AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: 80.0,
+        child: BottomAppBar(
+          child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, ProfileScreen.route);
+              },
+              icon: const Icon(Icons.person)),
+        ),
+      );
     }
 
     return Scaffold(

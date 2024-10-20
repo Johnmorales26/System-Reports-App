@@ -21,6 +21,16 @@ class _ItemUserState extends State<ItemUser> {
 
   @override
   Widget build(BuildContext context) {
+    Widget imageProfile = Container();
+
+    if (widget.user.image.isEmpty || widget.user.image == null) {
+      imageProfile = const Icon(Icons.person, size: 50);
+    } else {
+      imageProfile = ClipOval(
+          child: Image.network(widget.user.image,
+              width: 50, height: 50, fit: BoxFit.cover));
+    }
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,9 +39,7 @@ class _ItemUserState extends State<ItemUser> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ClipOval(
-                    child: Image.network(widget.user.image,
-                        width: 50, height: 50, fit: BoxFit.cover)),
+                imageProfile,
                 Text(widget.user.name),
                 IconButton(
                   icon: Icon(

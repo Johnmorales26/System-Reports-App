@@ -10,6 +10,8 @@ import 'package:system_reports_app/ui/style/dimens.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  static const route = "/profileScreen";
+
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ProfileViewModel>(context);
