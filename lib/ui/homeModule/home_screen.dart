@@ -340,7 +340,8 @@ class _TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<HomeViewModel>(context);
-    return FutureBuilder<Stream<QuerySnapshot<Map<String, dynamic>>>>(
+    
+    return FutureBuilder<Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>>(
       future: viewModel.getAllTask(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -357,7 +358,7 @@ class _TaskList extends StatelessWidget {
           return const Center(child: Text('No data available'));
         }
 
-        return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        return StreamBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
           stream: stream,
           builder: (context, streamSnapshot) {
             if (streamSnapshot.connectionState == ConnectionState.waiting) {
@@ -368,14 +369,13 @@ class _TaskList extends StatelessWidget {
               return Center(child: Text('Error: ${streamSnapshot.error}'));
             }
 
-            final data = streamSnapshot.data;
-            final tasks = data?.docs
-                    .map((doc) => TaskEntity.fromJson(doc.data()))
-                    .toList() ??
-                [];
+            final tasks = streamSnapshot.data ?? [];
 
             final filteredTasks = tasks.where((task) {
-              return task.uidUser == viewModel.currentUser.currentUser?.uid;
+              // Aquí asumimos que `uidUser` se puede obtener de un TaskEntity,
+              // tendrás que crear tu lógica para convertir los datos a `TaskEntity`
+              final taskEntity = TaskEntity.fromJson(task.data());
+              return taskEntity.uidUser == viewModel.currentUser.currentUser?.uid;
             }).toList();
 
             if (filteredTasks.isEmpty) {
@@ -387,8 +387,8 @@ class _TaskList extends StatelessWidget {
               child: ListView.builder(
                 itemCount: filteredTasks.length,
                 itemBuilder: (context, index) {
-                  final task = filteredTasks[index];
-                  return ItemTask(taskEntity: task);
+                  final taskEntity = TaskEntity.fromJson(filteredTasks[index].data());
+                  return ItemTask(taskEntity: taskEntity);
                 },
               ),
             );
@@ -398,6 +398,8 @@ class _TaskList extends StatelessWidget {
     );
   }
 }
+
+
 
 class _CascadingMenuState extends StatefulWidget {
   final List<DataEntry> dataEntryList;
