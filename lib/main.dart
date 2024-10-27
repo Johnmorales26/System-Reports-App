@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:system_reports_app/ui/activitiesReportModule/activities_report_view_model.dart';
 import 'package:system_reports_app/ui/appModule/app.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_view_model.dart';
 import 'package:system_reports_app/ui/generalReportModule/general_report_view_model.dart';
@@ -28,7 +29,8 @@ void main() async {
       ChangeNotifierProvider(create: (_) => ExpensesReportViewModel()),
       ChangeNotifierProvider(create: (_) => ReportsInnerViewModel()),
       ChangeNotifierProvider(create: (_) => ProfileViewModel()),
-      ChangeNotifierProvider(create: (_) => GeneralReportViewModel())
+      ChangeNotifierProvider(create: (_) => GeneralReportViewModel()),
+      ChangeNotifierProvider(create: (_) => ActivitiesReportViewModel())
     ],
     child: const App()
   ));

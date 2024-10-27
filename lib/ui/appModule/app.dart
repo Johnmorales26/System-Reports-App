@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:system_reports_app/ui/activitiesReportModule/activity_reports_screen.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_screen.dart';
 import 'package:system_reports_app/ui/generalReportModule/general_report_screen.dart';
 import 'package:system_reports_app/ui/profileModule/profile_screen.dart';
@@ -32,7 +33,8 @@ class App extends StatelessWidget {
           HomeScreen.route: (context) => const HomeScreen(),
           ReportScreen.route: (context) => const ReportAdminScreen(),
           ExpensesReportScreen.route: (context) => const ExpensesReportScreen(),
-          ProfileScreen.route: (context) => const ProfileScreen()
+          ProfileScreen.route: (context) => const ProfileScreen(),
+          ActivityReportsScreen.route: (context) => ActivityReportsScreen()
         });
   }
 

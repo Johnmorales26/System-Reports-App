@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:system_reports_app/data/local/user_database.dart';
 import 'package:system_reports_app/data/models/data_entry.dart';
+import 'package:system_reports_app/ui/activitiesReportModule/activity_reports_screen.dart';
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_screen.dart';
 import 'package:system_reports_app/ui/generalReportModule/general_report_screen.dart';
 import 'package:system_reports_app/ui/homeModule/home_view_model.dart';
@@ -285,6 +286,14 @@ class __AdminMenuState extends State<_AdminMenu> {
                 ),
               if (widget.privileges == UserPrivileges.admin)
                 ListTile(
+                  leading: const Icon(Icons.add_box_outlined),
+                  title: const Text('Activities Report'),
+                  subtitle: const Text('Create a new activities report.'),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () => Navigator.pushNamed(context, ActivityReportsScreen.route),
+                ),
+              if (widget.privileges == UserPrivileges.user)
+                ListTile(
                   leading: const Icon(Icons.computer_outlined),
                   title: const Text('Computer Report'),
                   subtitle: const Text('Create a report for a computer.'),
@@ -297,7 +306,7 @@ class __AdminMenuState extends State<_AdminMenu> {
                                 .COLLECTION_COMPUTER), // Paso de parámetro
                       )),
                 ),
-              if (widget.privileges == UserPrivileges.admin)
+              if (widget.privileges == UserPrivileges.user)
                 ListTile(
                   leading: const Icon(Icons.car_crash_outlined),
                   title: const Text('Vehicle Report'),
