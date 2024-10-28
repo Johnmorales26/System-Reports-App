@@ -14,6 +14,7 @@ import 'package:system_reports_app/ui/expensesReportModule/pdf_generator.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:system_reports_app/ui/style/dimens.dart';
 import 'package:system_reports_app/utils/constants.dart';
+import 'package:system_reports_app/utils/utils.dart';
 
 class ActivitiesReportViewModel extends ChangeNotifier {
   final firebaseDatabase = FirebaseDatabase();
@@ -35,34 +36,6 @@ class ActivitiesReportViewModel extends ChangeNotifier {
     exportBackgroundColor: Colors.white,
   );
 
-  String dateTimeToString(DateTime dateTime) {
-    return '${dateTime.year.toString().padLeft(4, '0')}-'
-        '${dateTime.month.toString().padLeft(2, '0')}-'
-        '${dateTime.day.toString().padLeft(2, '0')}';
-  }
-
-  DateTime stringToDateTime(String dateString) {
-    // Dividir el String en partes
-    final parts = dateString.split('-');
-    if (parts.length != 3) {
-      throw const FormatException(
-          "El formato de la fecha no es válido. Debe ser 'yyyy-MM-dd'.");
-    }
-
-    // Convertir las partes a enteros
-    final year = int.parse(parts[0]);
-    final month = int.parse(parts[1]);
-    final day = int.parse(parts[2]);
-
-    // Crear y retornar un objeto DateTime
-    return DateTime(year, month, day);
-  }
-
-  Future<Uint8List> fileToUint8List(File file) async {
-    Uint8List bytes = await file.readAsBytes();
-    return bytes;
-  }
-
   Future<bool> generatePDF(File signatureClient, File signatureFSE) async {
     final PdfGenerator pdfGenerator = PdfGenerator();
     final pdf = pw.Document();
@@ -72,8 +45,9 @@ class ActivitiesReportViewModel extends ChangeNotifier {
 
     final logo = await rootBundle.load(Assets.imgSilbec);
     final imageBytes = logo.buffer.asUint8List();
-    final signatureUintClient = await fileToUint8List(signatureClient);
-    final signatureUintFSE = await fileToUint8List(signatureFSE);
+    final signatureUintClient =
+        await Utils.instance.fileToUint8List(signatureClient);
+    final signatureUintFSE = await Utils.instance.fileToUint8List(signatureFSE);
 
     // Primera página
     pdf.addPage(
@@ -118,15 +92,15 @@ class ActivitiesReportViewModel extends ChangeNotifier {
   }
 
   Future<bool> generateFile(pw.Document pdf) async {
-  final memory = await getInternalStoragePath();
-    final year = stringToDateTime(dateController.text).year;
+    final memory = await getInternalStoragePath();
+    final year = Utils.instance.stringToDateTime(dateController.text).year;
     //final week = getWeekNumber(stringToDateTime(dateController.text));
-    final nameFile = 'ActivitiesReport_${year}_${clientController.text}';
+    final nameFile = 'TAR${year}_${clientController.text}';
 
     final file = File('$memory/$nameFile');
     await file.writeAsBytes(await pdf.save());
-    String response =
-        await uploadFile(file, 'activities_reports/${file.path.split('/').last}.pdf');
+    String response = await uploadFile(
+        file, 'activities_reports/${file.path.split('/').last}.pdf');
     saveInFirestore(response);
     if (response.isNotEmpty) {
       return true;

@@ -23,8 +23,8 @@ class ReportScreen extends StatelessWidget {
 
   const ReportScreen({super.key, required this.dataEntry});
 
-  Future<File> _getSignatureFile(ReportViewModel viewModel) async {
-    final imageBytes = await viewModel.signatureController.toPngBytes();
+  Future<File> _getSignatureFile(SignatureController signature) async {
+    final imageBytes = await signature.toPngBytes();
     if (imageBytes != null) {
       final image = img.decodeImage(imageBytes)!;
       final tempDir = Directory.systemTemp;
@@ -77,8 +77,9 @@ class ReportScreen extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                   context, HomeScreen.route, (Route<dynamic> route) => false);
             } else {
-              final signature = await _getSignatureFile(viewModel);
-              var response = await viewModel.generatePDF(signature);
+              final signatureFSE = await _getSignatureFile(viewModel.signatureFSEController);
+              final signatureClient = await _getSignatureFile(viewModel.signatureClientController);
+              var response = await viewModel.generatePDF(signatureFSE, signatureClient);
               if (response) {
                 viewModel.clearControllers();
                 viewModel.deletePendingTask(dataEntry);
@@ -147,9 +148,16 @@ class _Form extends StatelessWidget {
           keyboardType: TextInputType.text),
       const SizedBox(height: Dimens.commonPaddingMin),
       Signature(
-        controller: provider.signatureController,
+        controller: provider.signatureFSEController,
         height: 150,
       ),
+      const Text('Firma FSE'),
+      const SizedBox(height: Dimens.commonPaddingMin),
+      Signature(
+        controller: provider.signatureClientController,
+        height: 150,
+      ),
+      const Text('Firma Cliente'),
       const SizedBox(height: Dimens.commonPaddingMin),
       isSelectedImage
     ]);

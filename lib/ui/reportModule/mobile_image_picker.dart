@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:system_reports_app/ui/reportModule/report_view_model.dart';
+import 'package:system_reports_app/utils/utils.dart';
 
 Future<String> getImageFromGallery(
     BuildContext context, ReportViewModel provider) async {
@@ -49,9 +50,13 @@ Future<String> getInternalStoragePath() async {
   return directory.path;
 }
 
-Future<bool> generateFile(pw.Document pdf, String reference, ReportViewModel reportViewModel) async {
-  final memory = await getInternalStoragePath();
-  final file = File('$memory/$reference');
+Future<bool> generateFile(pw.Document pdf, String reference, ReportViewModel reportViewModel, String date, String client) async {
+    final memory = await getInternalStoragePath();
+    final year = Utils.instance.stringToDateTime(date).year;
+    //final week = getWeekNumber(stringToDateTime(dateController.text));
+    final nameFile = 'TTAR${year}_${client}';
+
+    final file = File('$memory/$nameFile');
   await file.writeAsBytes(await pdf.save());
   String response = await uploadFile(file, 'pdfs/${file.path.split('/').last}.pdf');
   reportViewModel.saveInFirestore(response);

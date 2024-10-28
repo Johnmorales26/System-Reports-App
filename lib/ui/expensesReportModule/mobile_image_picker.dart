@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:system_reports_app/ui/expensesReportModule/expenses_report_view_model.dart';
 import 'package:system_reports_app/ui/generalReportModule/general_report_view_model.dart';
-import 'package:system_reports_app/ui/reportModule/report_view_model.dart';
 
 Future<String> getImageFromGallery(
     BuildContext context, ExpensesReportViewModel provider) async {

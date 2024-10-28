@@ -69,7 +69,12 @@ class ReportViewModel extends ChangeNotifier {
       endSchedule: TextEditingController(),
       travelHours: TextEditingController());
   final TextEditingController urlController = TextEditingController();
-  final SignatureController signatureController = SignatureController(
+  final SignatureController signatureFSEController = SignatureController(
+    penStrokeWidth: 3,
+    penColor: Colors.black,
+    exportBackgroundColor: Colors.white,
+  );
+  final SignatureController signatureClientController = SignatureController(
     penStrokeWidth: 3,
     penColor: Colors.black,
     exportBackgroundColor: Colors.white,
@@ -88,7 +93,7 @@ class ReportViewModel extends ChangeNotifier {
     return bytes;
   }
 
-  Future<bool> generatePDF(File signature) async {
+  Future<bool> generatePDF(File signatureFSE, File signatureClient) async {
     final PdfGenerator pdfGenerator = PdfGenerator();
     final pdf = pw.Document();
 
@@ -97,7 +102,8 @@ class ReportViewModel extends ChangeNotifier {
 
     final logo = await rootBundle.load(Assets.imgSilbec);
     final imageBytes = logo.buffer.asUint8List();
-    final signatureUint = await fileToUint8List(signature);
+    final signatureUintFSE = await fileToUint8List(signatureFSE);
+    final signatureUintClient = await fileToUint8List(signatureClient);
 
     // Primera página
     pdf.addPage(
@@ -230,7 +236,12 @@ class ReportViewModel extends ChangeNotifier {
             pw.SizedBox(height: 20),
             pw.Text('Firma', style: pw.Theme.of(context).header3),
             pw.SizedBox(height: 10),
-            pw.Image(pw.MemoryImage(signatureUint), width: 150, height: 100),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+              pw.Image(pw.MemoryImage(signatureUintFSE), width: 150, height: 100),
+              pw.Image(pw.MemoryImage(signatureUintClient), width: 150, height: 100)
+            ]),
             pw.Padding(
               padding: const pw.EdgeInsets.symmetric(vertical: 8),
               child: pw.Divider(),

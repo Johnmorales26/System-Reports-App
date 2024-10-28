@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 import 'package:system_reports_app/ui/activitiesReportModule/activities_report_view_model.dart';
+import 'package:system_reports_app/ui/homeModule/home_screen.dart';
+import 'package:system_reports_app/utils/utils.dart';
 import 'package:toastification/toastification.dart';
 import 'package:image/image.dart' as img;
 
@@ -31,7 +33,7 @@ class ActivityReportsScreen extends StatelessWidget {
     if (vm.dateController.text.isEmpty) {
       selectedDate = DateTime.now();
     } else {
-      selectedDate = vm.stringToDateTime(vm.dateController.text);
+      selectedDate = Utils.instance.stringToDateTime(vm.dateController.text);
     }
 
     final DateTime? picked = await showDatePicker(
@@ -43,7 +45,7 @@ class ActivityReportsScreen extends StatelessWidget {
 
     // Actualiza la fecha seleccionada
     if (picked != null && picked != selectedDate) {
-      vm.dateController.text = vm.dateTimeToString(picked);
+      vm.dateController.text = Utils.instance.dateTimeToString(picked);
     }
   }
 
@@ -127,7 +129,7 @@ class ActivityReportsScreen extends StatelessWidget {
                       await vm.generatePDF(signatureClient, signatureFse);
                   if (response) {
                     vm.clearControllers();
-                    Navigator.pop(context);
+                    Navigator.popAndPushNamed(context, HomeScreen.route);
                   } else {
                     toastification.show(
                         context: context,
