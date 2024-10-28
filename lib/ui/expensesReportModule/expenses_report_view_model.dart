@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:system_reports_app/utils/constants.dart';
+import 'package:system_reports_app/utils/utils.dart';
 
-import 'web_image_picker.dart' if (dart.library.io) 'mobile_image_picker.dart';
+import 'mobile_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
@@ -348,14 +349,20 @@ class ExpensesReportViewModel extends ChangeNotifier {
             ])
           ]);
         }));
-    return await generateFile(pdf, referenceController.text, this);
+    return await generateFile(pdf, referenceController.text, this,
+        Utils.instance.dateTimeToString(DateTime.now()), nameController.text);
   }
 
   Future<bool> saveInFirestore(String downloadURL) {
-    final taskEntity = TaskEntity(DateTime.now().millisecondsSinceEpoch,
-        referenceController.text, downloadURL, FirebaseAuth.instance.currentUser!.uid, false,
+    final taskEntity = TaskEntity(
+        DateTime.now().millisecondsSinceEpoch,
+        referenceController.text,
+        downloadURL,
+        FirebaseAuth.instance.currentUser!.uid,
+        false,
         image: '');
-    return firebaseDatabase.createTask(Constants.COLLECTION_TASKS_EXPENSES, taskEntity);
+    return firebaseDatabase.createTask(
+        Constants.COLLECTION_TASKS_EXPENSES, taskEntity);
   }
 
   void itemDelete(int index) {
