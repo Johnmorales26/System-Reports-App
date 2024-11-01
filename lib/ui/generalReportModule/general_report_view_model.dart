@@ -10,6 +10,7 @@ import 'package:system_reports_app/data/local/task_entity.dart';
 import 'package:system_reports_app/ui/expensesReportModule/mobile_image_picker.dart';
 import 'package:system_reports_app/ui/expensesReportModule/pdf_generator.dart';
 import 'package:system_reports_app/ui/style/dimens.dart';
+import 'package:system_reports_app/utils/constants.dart';
 
 import '../../data/network/firebase_database.dart';
 import '../appModule/assets.dart';
@@ -112,7 +113,7 @@ class GeneralReportViewModel extends ChangeNotifier {
         FirebaseAuth.instance.currentUser!.uid,
         false,
         image: urlController.text);
-    return firebaseDatabase.createTask(collection, taskEntity);
+    return firebaseDatabase.createTask(Constants.COLLECTION_TASKS, taskEntity);
   }
 
   void clearControllers() {

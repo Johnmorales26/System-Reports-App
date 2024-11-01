@@ -51,15 +51,17 @@ Future<String> getInternalStoragePath() async {
   return directory.path;
 }
 
-Future<bool> generateFile(pw.Document pdf, String reference, ExpensesReportViewModel reportViewModel, String date, String client) async {
-    final memory = await getInternalStoragePath();
-    final year = Utils.instance.stringToDateTime(date).year;
-    //final week = getWeekNumber(stringToDateTime(dateController.text));
-    final nameFile = 'TTAR${year}_${client}';
+Future<bool> generateFile(pw.Document pdf, String reference,
+    ExpensesReportViewModel reportViewModel, String date, String client) async {
+  final memory = await getInternalStoragePath();
+  final year = Utils.instance.stringToDateTime(date).year;
+  //final week = getWeekNumber(stringToDateTime(dateController.text));
+  final nameFile = 'TTAR${year}_${client}';
 
-    final file = File('$memory/$nameFile');
+  final file = File('$memory/$nameFile');
   await file.writeAsBytes(await pdf.save());
-  String response = await uploadFile(file, 'expenses_reports/${file.path.split('/').last}.pdf');
+  String response = await uploadFile(
+      file, 'expenses_reports/${file.path.split('/').last}.pdf');
   reportViewModel.saveInFirestore(response);
   if (response.isNotEmpty) {
     return true;
@@ -68,11 +70,13 @@ Future<bool> generateFile(pw.Document pdf, String reference, ExpensesReportViewM
   }
 }
 
-Future<bool> generateFileReportGeneral(pw.Document pdf, String reference, GeneralReportViewModel reportViewModel, String collection) async {
+Future<bool> generateFileReportGeneral(pw.Document pdf, String reference,
+    GeneralReportViewModel reportViewModel, String collection) async {
   final memory = await getInternalStoragePath();
   final file = File('$memory/$reference');
   await file.writeAsBytes(await pdf.save());
-  String response = await uploadFile(file, 'pdfs/${file.path.split('/').last}.pdf');
+  String response =
+      await uploadFile(file, '$collection/${file.path.split('/').last}.pdf');
   reportViewModel.saveInFirestore(response, collection);
   if (response.isNotEmpty) {
     return true;
