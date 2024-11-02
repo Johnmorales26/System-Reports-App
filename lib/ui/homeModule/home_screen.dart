@@ -11,6 +11,7 @@ import 'package:system_reports_app/ui/homeModule/home_view_model.dart';
 import 'package:system_reports_app/ui/homeModule/widgets/reports_inner_screen.dart';
 import 'package:system_reports_app/ui/profileModule/profile_screen.dart';
 import 'package:system_reports_app/ui/registerModule/user_privileges.dart';
+import 'package:system_reports_app/ui/reportAdminModule/report_admin_screen.dart';
 import 'package:system_reports_app/ui/signInModule/sign_in_screen.dart';
 import 'package:system_reports_app/ui/style/dimens.dart';
 import 'package:system_reports_app/ui/widgets/item_task.dart';
@@ -282,7 +283,12 @@ class __AdminMenuState extends State<_AdminMenu> {
                   title: const Text('New Report'),
                   subtitle: const Text('Create a new report from scratch.'),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => Navigator.pushNamed(context, ReportScreen.route),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    ReportScreen.route,
+                    arguments:
+                        const ReportAdminScreen(isActivitiesReport: false),
+                  ),
                 ),
               if (widget.privileges == UserPrivileges.admin)
                 ListTile(
@@ -290,7 +296,13 @@ class __AdminMenuState extends State<_AdminMenu> {
                   title: const Text('Activities Report'),
                   subtitle: const Text('Create a new activities report.'),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => Navigator.pushNamed(context, ActivityReportsScreen.route),
+                  onTap: () =>
+                      Navigator.pushNamed(
+                    context,
+                    ReportScreen.route,
+                    arguments:
+                        const ReportAdminScreen(isActivitiesReport: true),
+                  ),
                 ),
               if (widget.privileges == UserPrivileges.user)
                 ListTile(
@@ -340,8 +352,9 @@ class _TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<HomeViewModel>(context);
-    
-    return FutureBuilder<Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>>(
+
+    return FutureBuilder<
+        Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>>(
       future: viewModel.getAllTask(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -375,7 +388,8 @@ class _TaskList extends StatelessWidget {
               // Aquí asumimos que `uidUser` se puede obtener de un TaskEntity,
               // tendrás que crear tu lógica para convertir los datos a `TaskEntity`
               final taskEntity = TaskEntity.fromJson(task.data());
-              return taskEntity.uidUser == viewModel.currentUser.currentUser?.uid;
+              return taskEntity.uidUser ==
+                  viewModel.currentUser.currentUser?.uid;
             }).toList();
 
             if (filteredTasks.isEmpty) {
@@ -387,7 +401,8 @@ class _TaskList extends StatelessWidget {
               child: ListView.builder(
                 itemCount: filteredTasks.length,
                 itemBuilder: (context, index) {
-                  final taskEntity = TaskEntity.fromJson(filteredTasks[index].data());
+                  final taskEntity =
+                      TaskEntity.fromJson(filteredTasks[index].data());
                   return ItemTask(taskEntity: taskEntity);
                 },
               ),
@@ -398,8 +413,6 @@ class _TaskList extends StatelessWidget {
     );
   }
 }
-
-
 
 class _CascadingMenuState extends StatefulWidget {
   final List<DataEntry> dataEntryList;

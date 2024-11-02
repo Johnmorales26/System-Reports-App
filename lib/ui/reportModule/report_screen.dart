@@ -14,7 +14,7 @@ import 'package:system_reports_app/ui/reportModule/widgets/record_times_widget.d
 import 'package:system_reports_app/ui/style/dimens.dart';
 import 'package:toastification/toastification.dart';
 import '../appModule/assets.dart';
-import 'web_image_picker.dart' if (dart.library.io) 'mobile_image_picker.dart';
+import 'mobile_image_picker.dart';
 import 'package:image/image.dart' as img;
 
 class ReportScreen extends StatelessWidget {

@@ -30,7 +30,12 @@ class App extends StatelessWidget {
           SignInScreen.route: (context) => const SignInScreen(),
           SignUpScreen.route: (context) => const SignUpScreen(),
           HomeScreen.route: (context) => const HomeScreen(),
-          ReportScreen.route: (context) => const ReportAdminScreen(),
+          ReportScreen.route: (context) {
+            final args =
+                ModalRoute.of(context)!.settings.arguments as ReportAdminScreen;
+            return ReportAdminScreen(
+                isActivitiesReport: args.isActivitiesReport);
+          },
           ExpensesReportScreen.route: (context) => const ExpensesReportScreen(),
           ProfileScreen.route: (context) => const ProfileScreen(),
           ActivityReportsScreen.route: (context) => ActivityReportsScreen()

@@ -66,3 +66,20 @@ Future<bool> generateFile(pw.Document pdf, String reference, ReportViewModel rep
     return false;
   }
 }
+
+Future<bool> generateFileWithoutDate(pw.Document pdf, String reference, ReportViewModel reportViewModel) async {
+    final memory = await getInternalStoragePath();
+    final year = Utils.instance.stringToDateTime(DateTime.now().toString()).year;
+    //final week = getWeekNumber(stringToDateTime(dateController.text));
+    final nameFile = 'TTAR${year}_${reference}';
+
+    final file = File('$memory/$nameFile');
+  await file.writeAsBytes(await pdf.save());
+  String response = await uploadFile(file, 'pdfs/${file.path.split('/').last}.pdf');
+  reportViewModel.saveInFirestore(response);
+  if (response.isNotEmpty) {
+    return true;
+  } else {
+    return false;
+  }
+}

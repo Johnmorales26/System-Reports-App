@@ -16,7 +16,7 @@ import 'package:system_reports_app/ui/style/dimens.dart';
 import 'package:system_reports_app/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'web_image_picker.dart' if (dart.library.io) 'mobile_image_picker.dart';
+import 'mobile_image_picker.dart';
 import '../../data/network/firebase_database.dart';
 import '../appModule/assets.dart';
 
@@ -251,7 +251,7 @@ class ReportViewModel extends ChangeNotifier {
       ),
     );
 
-    return generateFile(pdf, customerData.referenceNumberController.text, this);
+    return generateFileWithoutDate(pdf, customerData.referenceNumberController.text, this);
   }
 
   Future<bool> saveInFirestore(String downloadURL) {

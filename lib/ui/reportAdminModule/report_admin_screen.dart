@@ -4,20 +4,22 @@ import 'package:system_reports_app/data/local/user_database.dart';
 import 'package:system_reports_app/ui/reportAdminModule/report_admin_view_model.dart';
 
 class ReportAdminScreen extends StatelessWidget {
-  const ReportAdminScreen({super.key});
+  const ReportAdminScreen({super.key, required this.isActivitiesReport});
+
+  final bool isActivitiesReport;
 
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ReportAdminViewModel>(context);
-
-    return Scaffold(body: _DataEntryFormState(vm: vm));
+    return Scaffold(body: _DataEntryFormState(vm: vm, isActivitiesReport: isActivitiesReport));
   }
 }
 
 class _DataEntryFormState extends StatelessWidget {
   final ReportAdminViewModel vm;
+  final bool isActivitiesReport;
 
-  const _DataEntryFormState({required this.vm});
+  const _DataEntryFormState({required this.vm, required this.isActivitiesReport});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +46,10 @@ class _DataEntryFormState extends StatelessWidget {
                           children: [
                             TextField(
                               controller: vm.referenceNumberController,
-                              decoration: const InputDecoration(
-                                labelText: 'Número de referencia',
+                              decoration: InputDecoration(
+                                labelText: isActivitiesReport == false ? 'Número de referencia' : 'Sitio del cliente',
                                 border:
-                                    OutlineInputBorder(), // Establece el borde a Outlined
+                                    const OutlineInputBorder(),
                               ),
                             ),
                             const SizedBox(
@@ -62,9 +64,9 @@ class _DataEntryFormState extends StatelessWidget {
                             const SizedBox(height: 10),
                             TextField(
                               controller: vm.locationController,
-                              decoration: const InputDecoration(
-                                labelText: 'Locación',
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: isActivitiesReport == false ? 'Locación' : 'País',
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -75,34 +77,34 @@ class _DataEntryFormState extends StatelessWidget {
                               child: AbsorbPointer(
                                   child: TextField(
                                 controller: vm.fseNameController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Nombre FSE',
-                                  border: OutlineInputBorder(),
+                                decoration: InputDecoration(
+                                  labelText: isActivitiesReport == false ? 'FSE Name' : 'Especialista',
+                                  border: const OutlineInputBorder(),
                                 ),
                               )),
                             ),
                             const SizedBox(height: 10),
                             TextField(
                               controller: vm.customManagerController,
-                              decoration: const InputDecoration(
-                                labelText: 'Custom Manager',
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: isActivitiesReport == false ? 'Custom Manager' : 'Fecha',
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                             const SizedBox(height: 10),
                             TextField(
                               controller: vm.activityPerformedController,
-                              decoration: const InputDecoration(
-                                labelText: 'Activity Performed',
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: isActivitiesReport == false ? 'Activity Performed' : 'Servicio',
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                             const SizedBox(height: 10),
                             TextField(
                               controller: vm.observationsController,
-                              decoration: const InputDecoration(
-                                labelText: 'Observaciones',
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: isActivitiesReport == false ? 'Observaciones' : 'Objetivo',
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                             const SizedBox(height: 20),
